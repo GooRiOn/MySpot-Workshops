@@ -1,0 +1,50 @@
+using MySpot.Core.Reservations.Exceptions;
+using MySpot.Core.Reservations.Policies;
+using MySpot.Core.Reservations.Types;
+using MySpot.Core.Reservations.ValueObjects;
+using MySpot.Core.Shared.Time;
+
+namespace MySpot.Core.Reservations.Entities;
+
+public class WeeklyReservations
+{
+    public WeeklyReservationsId Id { get; private set; }
+    public UserId UserId { get; private set; }
+    public string JobTitle { get; private set; } // could be considered as "trusted" value, thus no need for VO in this case
+    public Week Week { get; private set; }
+
+    public IEnumerable<Reservation> Reservations => _reservations;
+    
+    private HashSet<Reservation> _reservations = new();
+
+    public WeeklyReservations(WeeklyReservationsId id, UserId userId, string jobTitle, 
+        Week week)
+    {
+        Id = id;
+        UserId = userId;
+        JobTitle = jobTitle;
+        Week = week;
+    }
+
+    public void AddReservation(Reservation reservation, IClock clock, IEnumerable<IReservationPolicy> policies)
+    {
+        if (reservation.Date.Value < clock.Current()|| reservation.Date < Week.From || reservation.Date > Week.To)
+        {
+            throw new InvalidReservationDateException(reservation.Date);
+        }
+
+        var jobTitlePolicy = policies.SingleOrDefault(x => x.CanBeApplied(JobTitle));
+
+        if (jobTitlePolicy is null)
+        {
+            throw new NoReservationPolicyFoundException(JobTitle);
+        }
+
+        if (!jobTitlePolicy.CanReserve(Reservations))
+        {
+            throw new CannotMakeReservationException(reservation.SpotId);
+        }
+
+        _reservations.Add(reservation);
+    }
+}

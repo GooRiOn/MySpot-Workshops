@@ -6,7 +6,7 @@ public sealed record LicensePlate
 {
     public string Value { get; }
 
-    public LicensePlate(string? value)
+    public LicensePlate(string value)
     {
         if (value is null || value.Length is < 5 or > 8)
         {

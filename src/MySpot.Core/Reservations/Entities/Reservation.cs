@@ -13,8 +13,8 @@ public sealed class Reservation
     public string Note { get; private set; }
     public ReservationStatus Status { get; private set; }
 
-    public Reservation(ReservationId id, ParkingSpotId spotId, Capacity capacity, LicensePlate licencePlate, 
-        Date date, string note)
+    public Reservation(ReservationId id, ParkingSpotId spotId, Capacity capacity, 
+        LicensePlate licencePlate, Date date, string note)
     {
         Id = id;
         SpotId = spotId;
@@ -33,8 +33,7 @@ public sealed class Reservation
 
     internal void MarkAsVerified()
         => Status = ReservationStatus.Verified;
-    
-    internal void MarkAsIncorrect()
-        => Status = ReservationStatus.Invalid;
 
+    internal void MarkAsInvalid()
+        => Status = ReservationStatus.Invalid;
 }
