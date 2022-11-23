@@ -31,7 +31,7 @@ public class WeeklyReservations
         Week = week;
     }
 
-    public void AddReservation(Reservation reservation, IClock clock, IEnumerable<IReservationPolicy> policies)
+    internal void AddReservation(Reservation reservation, IClock clock, IEnumerable<IReservationPolicy> policies)
     {
         if (reservation.Date.Value < clock.Current()|| reservation.Date < Week.From || reservation.Date > Week.To)
         {

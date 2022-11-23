@@ -25,6 +25,6 @@ public class UserId
     public static implicit operator string(UserId userId)
         => userId.Value.ToString();
 
-    public static implicit operator UserId?(string? value)
+    public static implicit operator UserId(string value)
         => string.IsNullOrWhiteSpace(value) ? null : Guid.Parse(value);
 }

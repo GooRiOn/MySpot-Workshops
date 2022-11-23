@@ -7,7 +7,6 @@ namespace MySpot.Core.Reservations.DomainServices;
 
 public sealed class ReservationDomainService : IReservationDomainService
 {
-
     private readonly IClock _clock;
     private readonly IEnumerable<IReservationPolicy> _policies;
 
