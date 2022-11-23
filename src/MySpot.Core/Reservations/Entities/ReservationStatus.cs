@@ -1,4 +1,4 @@
-namespace MySpot.Core.Entities;
+namespace MySpot.Core.Reservations.Entities;
 
 public enum ReservationStatus
 {

@@ -1,28 +1,40 @@
+using MySpot.Core.Reservations.Types;
 using MySpot.Core.Reservations.ValueObjects;
 
-namespace MySpot.Core.Entities;
+namespace MySpot.Core.Reservations.Entities;
 
 public sealed class Reservation
 {
-    public Guid Id { get; private set; }
-    public Guid ParkingId { get; private set; }
+    public ReservationId Id { get; private set; }
+    public  ParkingSpotId SpotId { get; private set; }
     public Capacity Capacity { get; private set; }
-    public string LicencePlate { get; private set; }
-    public DateTime Date { get; private set; }
+    public LicensePlate LicencePlate { get; private set; }
+    public Date Date { get; private set; }
     public string Note { get; private set; }
     public ReservationStatus Status { get; private set; }
 
-    public Reservation(Guid id, Guid parkingId, Capacity capacity, string licencePlate, 
-        DateTime date, string note, ReservationStatus status)
+    public Reservation(ReservationId id, ParkingSpotId spotId, Capacity capacity, LicensePlate licencePlate, 
+        Date date, string note)
     {
         Id = id;
-        ParkingId = parkingId;
+        SpotId = spotId;
         Capacity = capacity;
         LicencePlate = licencePlate;
         Date = date;
         Note = note;
-        Status = status;
+        Status = ReservationStatus.Pending;
     }
 
+    internal void ChangeNote(string note)
+        => Note = note;
     
+    internal void ChangeLicensePlate(LicensePlate licensePlate)
+        => LicencePlate = licensePlate;
+
+    internal void MarkAsVerified()
+        => Status = ReservationStatus.Verified;
+    
+    internal void MarkAsIncorrect()
+        => Status = ReservationStatus.Invalid;
+
 }
