@@ -1,3 +1,5 @@
+using MySpot.Core.Reservations.Exceptions;
+
 namespace MySpot.Core.Reservations.ValueObjects;
 
 public record Capacity
@@ -8,7 +10,7 @@ public record Capacity
     {
         if (value is < 1 or > 6)
         {
-            throw new ArgumentException();
+            throw new InvalidCapacityException(value);
         }
 
         Value = value;
