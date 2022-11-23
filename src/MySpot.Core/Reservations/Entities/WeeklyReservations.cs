@@ -1,3 +1,4 @@
+using MySpot.Core.Reservations.Events;
 using MySpot.Core.Reservations.Exceptions;
 using MySpot.Core.Reservations.Policies;
 using MySpot.Core.Reservations.Types;
@@ -15,7 +16,11 @@ public class WeeklyReservations
 
     public IEnumerable<Reservation> Reservations => _reservations;
     
+    public IEnumerable<IDomainEvent> DomainEvents => _domainEvents;
+    
     private HashSet<Reservation> _reservations = new();
+    
+    private readonly HashSet<IDomainEvent> _domainEvents = new();
 
     public WeeklyReservations(WeeklyReservationsId id, UserId userId, string jobTitle, 
         Week week)
@@ -46,5 +51,6 @@ public class WeeklyReservations
         }
 
         _reservations.Add(reservation);
+        _domainEvents.Add(new ReservationCreated(this, reservation));
     }
 }
